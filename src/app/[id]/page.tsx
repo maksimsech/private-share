@@ -1,10 +1,16 @@
+import type { Metadata } from 'next'
 import {unstable_noStore} from 'next/cache'
 import { notFound } from 'next/navigation'
 
 import { getRecord } from '@/mongo'
+import { isMessenger } from '@/utils/isMessenger'
 
 import { Text } from './_text'
 
+
+export const metadata: Metadata = {
+    description: 'Private message for you.',
+}
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -21,6 +27,10 @@ export default async function Page({
     },
 }: PageProps) {
     unstable_noStore()
+
+    if (isMessenger()) {
+        return null
+    }
 
     const record = await getRecord(id)
     if (!record) {
