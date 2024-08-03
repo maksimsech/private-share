@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import { Header } from '@/components/header'
 import { ThemeProvider } from '@/components/theme/provider'
 import { Toaster } from '@/components/ui/toaster'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/tw'
 
 import './globals.css'
 
