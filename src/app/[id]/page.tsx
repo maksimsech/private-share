@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import {unstable_noStore} from 'next/cache'
+import { unstable_noStore } from 'next/cache'
 import { notFound } from 'next/navigation'
 
 import { getRecord } from '@/mongo'
@@ -40,6 +40,7 @@ export default async function Page({
     return (
         <Text
             encodedText={record.text}
+            isOneTime={record.isOneTime}
         />
     )
 }

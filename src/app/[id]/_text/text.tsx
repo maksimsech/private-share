@@ -18,10 +18,12 @@ import {
 
 interface TextProps {
     encodedText: string
+    isOneTime: boolean
 }
 
 export function Text({
     encodedText,
+    isOneTime,
 }: TextProps) {
     const anchor = window.location.hash
 
@@ -58,9 +60,11 @@ export function Text({
                 <p>
                     Link You used don&apos;t have correct format. Link should include # symbol and text after it.
                 </p>
-                <p>
-                    As it is one-time link, please ask for new correct link, because existing link will stop working.
-                </p>
+                {isOneTime && (
+                    <p>
+                        As it is one-time link, please ask for new correct link, because existing link will stop working.
+                    </p>
+                )}
             </main>
         )
     }
@@ -71,9 +75,11 @@ export function Text({
                 <p>
                     We encountered error during processing of Your text.
                 </p>
-                <p>
-                    As it is one-time link, please ask for new correct link, because existing link will stop working.
-                </p>
+                {isOneTime && (
+                    <p>
+                        As it is one-time link, please ask for new correct link, because existing link will stop working.
+                    </p>
+                )}
             </main>
         )
     }
@@ -94,9 +100,11 @@ export function Text({
                 readOnly
                 value={text}
             />
-            <p className='text-muted-foreground text-[0.8rem]'>
-                Warning! This is one-time link.
-            </p>
+            {isOneTime && (
+                <p className='text-muted-foreground text-[0.8rem]'>
+                    Warning! This is one-time link.
+                </p>
+            )}
             <Button
                 onClick={copyToClipboard}
             >

@@ -9,17 +9,21 @@ import {
     generateKey,
 } from '@/crypto'
 
+import type { Link } from './models'
+
 
 const maxLength = 200
 
 interface SaveButtonProps {
     textareaId: string
-    onLinkUpdated: (link: string) => void
+    isOneTime: boolean
+    onLinkUpdated: (link: Link) => void
     onErrorUpdated: (errorMessage: string) => void
 }
 
 export function SaveButton({
     textareaId,
+    isOneTime: isOneTimeProp,
     onLinkUpdated,
     onErrorUpdated,
 }: SaveButtonProps) {
@@ -33,8 +37,8 @@ export function SaveButton({
                 onErrorUpdated(`Text is longer than ${maxLength}`)
                 return
             }
-            // TODO: Add max length check
             setIsUpdating(true)
+            const isOneTime = isOneTimeProp
 
             const key = await generateKey()
 
@@ -44,10 +48,13 @@ export function SaveButton({
             const id = await createRecord({
                 text: arrayBufferToBase64(encryptedData.cipherText),
                 ttlSeconds: 5 * 60,
-                isOneTime: true,
+                isOneTime,
             })
 
-            onLinkUpdated(`/${id}#${arrayBufferToBase64(encryptedData.iv)}_${arrayBufferToBase64(exportedKey)}`)
+            onLinkUpdated({
+                url: `/${id}#${arrayBufferToBase64(encryptedData.iv)}_${arrayBufferToBase64(exportedKey)}`,
+                isOneTime,
+            })
         }
         finally {
             setIsUpdating(false)
