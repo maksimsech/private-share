@@ -14,7 +14,10 @@ export function Header() {
                 href='/'
                 className='py-2 font-bold'
             >
-                privateshare
+                privateshare&nbsp;
+                <span className='text-muted-foreground text-[0.8rem]'>
+                    by mngapp
+                </span>
             </Link>
             <div className='flex items-center gap-2'>
                 <Link
