@@ -2,27 +2,30 @@
 
 import {
     useState,
-    type ReactNode,
+    useId,
 } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 
+import type { Link } from './models'
 import { SaveButton } from './save-button'
 
 
 interface FormProps {
     textareaId: string
-    children: ReactNode
 }
 
 export function Form ({
     textareaId,
-    children,
 }: FormProps) {
-    const [link, setLink] = useState<string | null>(null)
+    const checkboxId = useId()
+
+    const [link, setLink] = useState<Link | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [isOneTime, setIsOneTime] = useState(false)
     const { toast } = useToast()
 
     const copyToClipboard = async () => {
@@ -33,7 +36,7 @@ export function Form ({
             title: 'Text copied to clipboard.',
         })
         // TODO: Revisit
-        const text = `${location.origin}${link}`
+        const text = `${location.origin}${link.url}`
         await navigator.clipboard.writeText(text)
         toast({
             title: 'Text copied to clipboard.',
@@ -41,10 +44,28 @@ export function Form ({
     }
 
     return (
-        <main className='flex flex-col gap-2 px-2'>
-            {children}
+        <>
+            <div className='items-top flex space-x-2'>
+                <Checkbox
+                    id={checkboxId}
+                    checked={isOneTime}
+                    onCheckedChange={v => setIsOneTime(v === 'indeterminate' ? false : v)}
+                />
+                <div className='grid gap-1.5 leading-none'>
+                    <label
+                        htmlFor={checkboxId}
+                        className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                    >
+                        Create one-time text
+                    </label>
+                    <p className='text-muted-foreground text-sm'>
+                        A one-time text will be automatically deleted when user sees it.
+                    </p>
+                </div>
+            </div>
             <SaveButton
                 textareaId={textareaId}
+                isOneTime={isOneTime}
                 onLinkUpdated={(link) => {
                     setError(null)
                     setLink(link)
@@ -60,12 +81,14 @@ export function Form ({
                 <div className='flex flex-col gap-2 rounded border-2 p-2'>
                     <Input
                         readOnly
-                        value={link}
+                        value={link.url}
                         onClick={copyToClipboard}
                     />
-                    <p className='text-muted-foreground text-[0.8rem]'>
-                        Warning! This is one-time link.
-                    </p>
+                    {link.isOneTime && (
+                        <p className='text-muted-foreground text-[0.8rem]'>
+                            Warning! This is one-time link.
+                        </p>
+                    )}
                     <Button
                         onClick={copyToClipboard}
                     >
@@ -73,6 +96,6 @@ export function Form ({
                     </Button>
                 </div>
             )}
-        </main>
+        </>
     )
 }

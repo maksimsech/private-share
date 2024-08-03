@@ -13,7 +13,7 @@ export default function NotFound() {
                 404
             </h1>
             <h2 className='ml-2 border-l pl-2'>
-                    This page could not be found.
+                This page could not be found.
             </h2>
         </div>
     )

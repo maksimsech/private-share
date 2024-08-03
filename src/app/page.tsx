@@ -12,11 +12,10 @@ export default function Home() {
     const textareaId = useId()
 
     return (
-        <Form
-            textareaId={textareaId}
-        >
+        <main className='flex flex-col gap-2 px-2'>
             <Label htmlFor={textareaId}>Your text:</Label>
             <Textarea id={textareaId} />
-        </Form>
+            <Form textareaId={textareaId} />
+        </main>
     )
 }
