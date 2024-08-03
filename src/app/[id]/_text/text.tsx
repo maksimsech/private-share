@@ -14,16 +14,19 @@ import {
     decryptString,
     importKey,
 } from '@/crypto'
+import { formatDate } from '@/utils/date'
 
 
 interface TextProps {
     encodedText: string
     isOneTime: boolean
+    expireAt: Date
 }
 
 export function Text({
     encodedText,
     isOneTime,
+    expireAt,
 }: TextProps) {
     const anchor = window.location.hash
 
@@ -100,6 +103,11 @@ export function Text({
                 readOnly
                 value={text}
             />
+            {!isOneTime && (
+                <p className='text-muted-foreground text-[0.8rem]'>
+                    Link will expire {formatDate(expireAt)}
+                </p>
+            )}
             {isOneTime && (
                 <p className='text-muted-foreground text-[0.8rem]'>
                     Warning! This is one-time link.

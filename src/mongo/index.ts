@@ -9,7 +9,7 @@ interface Record extends RecordModel {
     _id: string
 }
 
-interface GetRecordResponse extends Pick<RecordModel, 'text'> {
+interface GetRecordResponse extends RecordModel {
     isOneTime: boolean
 }
 
@@ -29,6 +29,7 @@ export async function getRecord(id: string): Promise<GetRecordResponse | null> {
     }, {
         projection: {
             text: 1,
+            expireAt: 1,
         },
     })
 
@@ -44,6 +45,7 @@ export async function getRecord(id: string): Promise<GetRecordResponse | null> {
 
     return {
         text: record.text,
+        expireAt: record.expireAt,
         isOneTime: recordIsOneTime,
     }
 }
@@ -72,7 +74,10 @@ export async function createRecord(record: Pick<RecordModel, 'text' > & {
                 expireAt: expireAt,
             })
 
-            return id
+            return {
+                id,
+                expireAt,
+            }
         }
 
         catch (e) {

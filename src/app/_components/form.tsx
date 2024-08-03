@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
+import { formatDate } from '@/utils/date'
 
 import type { Link } from './models'
 import { SaveButton } from './save-button'
@@ -84,6 +85,9 @@ export function Form ({
                         value={link.url}
                         onClick={copyToClipboard}
                     />
+                    <p className='text-muted-foreground text-[0.8rem]'>
+                        Link will expire {formatDate(link.expireAt)}
+                    </p>
                     {link.isOneTime && (
                         <p className='text-muted-foreground text-[0.8rem]'>
                             Warning! This is one-time link.

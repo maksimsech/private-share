@@ -1,7 +1,7 @@
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/tw'
 
 import { ModeToggle } from './theme/edit-button'
 import { buttonVariants } from './ui/button'

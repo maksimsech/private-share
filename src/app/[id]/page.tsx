@@ -3,7 +3,7 @@ import { unstable_noStore } from 'next/cache'
 import { notFound } from 'next/navigation'
 
 import { getRecord } from '@/mongo'
-import { isMessenger } from '@/utils/isMessenger'
+import { isMessenger } from '@/utils/is-messenger'
 
 import { Text } from './_text'
 
@@ -41,6 +41,7 @@ export default async function Page({
         <Text
             encodedText={record.text}
             isOneTime={record.isOneTime}
+            expireAt={record.expireAt}
         />
     )
 }

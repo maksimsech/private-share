@@ -45,7 +45,10 @@ export function SaveButton({
             const encryptedData = await encryptString(text, key)
             const exportedKey = await exportKey(key)
 
-            const id = await createRecord({
+            const {
+                id,
+                expireAt,
+            } = await createRecord({
                 text: arrayBufferToBase64(encryptedData.cipherText),
                 ttlSeconds: 5 * 60,
                 isOneTime,
@@ -54,6 +57,7 @@ export function SaveButton({
             onLinkUpdated({
                 url: `/${id}#${arrayBufferToBase64(encryptedData.iv)}_${arrayBufferToBase64(exportedKey)}`,
                 isOneTime,
+                expireAt,
             })
         }
         finally {
